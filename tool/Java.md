@@ -228,79 +228,174 @@ JDK 的版本通常与 Java SE 的版本一致。例如，JDK 8 对应 Java SE 8
 
 `Scanner` 类是 Java 中用于从各种输入源（如控制台、文件、字符串等）读取数据的实用工具。它位于 `java.util` 包中，通常用于处理简单的控制台输入。
 
-#### 1.1 `Scanner` 的基本使用
-使用 `Scanner` 读取控制台输入时，通常通过 `System.in` 创建一个 `Scanner` 对象：
+`Scanner` 类是 Java 中用于获取用户输入的一个非常重要且常用的类。它属于 `java.util` 包，能够读取各种输入源的数据，如键盘输入、文件、字符串等。`Scanner` 类提供了多种方法来解析和提取不同类型的输入数据，包括整数、浮点数、字符串等。
+
+#### 1. **导入 Scanner 类**
+
+在使用 `Scanner` 类之前，需要从 `java.util` 包导入它：
 
 ```java
 import java.util.Scanner;
+```
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter something:");
-        String input = scanner.nextLine();  // 读取整行输入
-        System.out.println("You entered: " + input);
-    }
+#### 2. **创建 Scanner 对象**
+
+创建 `Scanner` 对象时，需要指定输入源。最常见的情况是从控制台获取用户输入，可以通过 `System.in` 来实现：
+
+```java
+Scanner scanner = new Scanner(System.in);
+```
+
+#### 3. **从控制台读取输入**
+
+`Scanner` 类提供了多种方法来读取不同类型的输入。
+
+#### 读取字符串
+
+- `next()`: 读取下一个单词（以空格、换行符等为分隔符）。
+- `nextLine()`: 读取整行文本，包括空格。
+
+```java
+System.out.print("Enter a word: ");
+String word = scanner.next(); // 读取一个单词
+System.out.println("You entered: " + word);
+
+System.out.print("Enter a sentence: ");
+scanner.nextLine(); // 清除缓冲区中的换行符
+String sentence = scanner.nextLine(); // 读取整行
+System.out.println("You entered: " + sentence);
+```
+
+#### 读取整数
+
+- `nextInt()`: 读取一个整数。
+
+```java
+System.out.print("Enter an integer: ");
+int number = scanner.nextInt();
+System.out.println("You entered: " + number);
+```
+
+#### 读取浮点数
+
+- `nextFloat()`: 读取一个浮点数（`float` 类型）。
+- `nextDouble()`: 读取一个双精度浮点数（`double` 类型）。
+
+```java
+System.out.print("Enter a float number: ");
+float floatNumber = scanner.nextFloat();
+System.out.println("You entered: " + floatNumber);
+
+System.out.print("Enter a double number: ");
+double doubleNumber = scanner.nextDouble();
+System.out.println("You entered: " + doubleNumber);
+```
+
+#### 读取布尔值
+
+- `nextBoolean()`: 读取一个布尔值（`true` 或 `false`）。
+
+```java
+System.out.print("Enter a boolean value: ");
+boolean boolValue = scanner.nextBoolean();
+System.out.println("You entered: " + boolValue);
+```
+
+#### 4. **处理输入异常**
+
+`Scanner` 读取数据时，用户输入的数据类型可能与预期的不符。这种情况下，`Scanner` 会抛出 `InputMismatchException` 异常。因此，通常需要使用异常处理来保证程序的稳定性。
+
+```java
+try {
+    System.out.print("Enter an integer: ");
+    int number = scanner.nextInt();
+    System.out.println("You entered: " + number);
+} catch (InputMismatchException e) {
+    System.out.println("Invalid input. Please enter an integer.");
+    scanner.next(); // 清除错误的输入
 }
 ```
 
-#### 1.2 `Scanner` 类常用方法
+#### 5. **检查输入**
 
-- **读取字符串**:
-  - `nextLine()`: 读取整行输入，包括空格和回车。
-  - `next()`: 读取输入的下一个标记（以空格、换行符或制表符作为分隔符）。
+`Scanner` 类提供了一些方法来检查输入中是否包含特定类型的数据，这对于在读取之前验证输入数据非常有用。
 
-  ```java
-  String line = scanner.nextLine();  // 读取整行
-  String word = scanner.next();      // 读取下一个单词
-  ```
+- `hasNext()`: 是否有下一个输入。
+- `hasNextInt()`: 是否有下一个整数。
+- `hasNextDouble()`: 是否有下一个双精度浮点数。
+- `hasNextLine()`: 是否有下一行。
 
-- **读取基本数据类型**:
-  - `nextInt()`: 读取 `int` 类型的整数。
-  - `nextDouble()`: 读取 `double` 类型的小数。
-  - `nextFloat()`: 读取 `float` 类型的小数。
-  - `nextLong()`: 读取 `long` 类型的整数。
-  - `nextBoolean()`: 读取布尔值 (`true` 或 `false`)。
+```java
+if (scanner.hasNextInt()) {
+    int number = scanner.nextInt();
+    System.out.println("You entered an integer: " + number);
+} else {
+    System.out.println("Not an integer.");
+}
+```
 
-  ```java
-  int number = scanner.nextInt();       // 读取整数
-  double decimal = scanner.nextDouble(); // 读取小数
-  boolean bool = scanner.nextBoolean();  // 读取布尔值
-  ```
+#### 6. **从字符串读取输入**
 
-- **读取字符**:
-  `Scanner` 类没有直接读取单个字符的方法，但可以通过读取字符串并提取第一个字符来实现。
+`Scanner` 还可以从字符串中读取数据：
 
-  ```java
-  char character = scanner.next().charAt(0);  // 读取输入的第一个字符
-  ```
+```java
+String input = "123 456 789";
+Scanner stringScanner = new Scanner(input);
 
-- **读取数组**:
-  可以使用 `Scanner` 循环读取多个值来填充数组。
+while (stringScanner.hasNextInt()) {
+    System.out.println("Found integer: " + stringScanner.nextInt());
+}
+```
 
-  ```java
-  int[] numbers = new int[5];
-  for (int i = 0; i < numbers.length; i++) {
-      numbers[i] = scanner.nextInt();  // 依次读取整数存入数组
-  }
-  ```
+#### 7. **从文件读取输入**
 
-- **判断是否有更多输入**:
-  - `hasNext()`: 检查是否有更多输入。
-  - `hasNextInt()`, `hasNextDouble()`: 检查下一个输入是否为特定类型。
+`Scanner` 还可以用于读取文件内容：
 
-  ```java
-  if (scanner.hasNextInt()) {
-      int number = scanner.nextInt();
-  }
-  ```
+```java
+import java.io.File;
+import java.io.FileNotFoundException;
 
-#### 1.3 关闭 `Scanner`
-使用 `Scanner` 读取数据后，应调用 `close()` 方法关闭它以释放资源，特别是在读取文件或网络流时。
+try {
+    File file = new File("example.txt");
+    Scanner fileScanner = new Scanner(file);
+
+    while (fileScanner.hasNextLine()) {
+        System.out.println(fileScanner.nextLine());
+    }
+    fileScanner.close();
+} catch (FileNotFoundException e) {
+    System.out.println("File not found.");
+}
+```
+
+#### 8. **关闭 Scanner**
+
+在完成输入读取后，建议关闭 `Scanner` 对象以释放资源，尤其是在处理文件输入时。这可以通过调用 `close()` 方法实现。
 
 ```java
 scanner.close();
 ```
+
+#### 9. **常用方法一览**
+
+- **`next()`**: 读取下一个标记（以空白字符为分隔符）。
+- **`nextLine()`**: 读取整行输入。
+- **`nextInt()`**: 读取下一个整数。
+- **`nextFloat()`**: 读取下一个浮点数。
+- **`nextDouble()`**: 读取下一个双精度浮点数。
+- **`nextBoolean()`**: 读取下一个布尔值。
+- **`hasNext()`**: 检查是否有下一个标记。
+- **`hasNextLine()`**: 检查是否有下一行。
+- **`hasNextInt()`**: 检查是否有下一个整数。
+- **`close()`**: 关闭 `Scanner`。
+
+#### 10. **注意事项**
+
+- 使用 `next()` 读取字符串后，如果需要读取整行，通常需要调用一次 `nextLine()` 来清除缓冲区中的换行符。
+- 在处理文件输入时，请确保正确处理 `FileNotFoundException` 异常。
+- 在多线程环境中使用 `Scanner` 时需要小心，因为 `Scanner` 类不是线程安全的。
+
+`Scanner` 类的灵活性和多功能性使其成为处理输入的一个非常有用的工具，无论是从控制台、文件还是字符串中读取数据。
 
 ### 2. `System.out.println` 的使用
 
@@ -404,13 +499,75 @@ System.out.printf("x = %d, y = %.2f", x, y);  // 输出: x = 10, y = 20.50
 
 #### 2.2 `double`
 - **定义**: `double` 占用 8 个字节（64 位），是 Java 中默认的浮点型数据类型。
+
 - **范围**: 约为 1.7e−308 到 1.7e+308，精度约为 15 位十进制数。
+
 - **使用**:
     ```java
     double k = 19.99;  // 初始化并赋值
     double l = -100.01;
     ```
+    
 - **注意事项**: `double` 是 Java 中的默认浮点型类型，通常在需要更高精度时使用。
+
+#### 2.3float与double的选择
+
+> 在Java中，通常使用 `double` 而不是 `float`，尤其是在需要进行精确计算或处理小数点后更多位数时。以下是 `float` 和 `double` 之间的一些关键区别，以及为什么 `double` 更常用的原因：
+
+##### 1. **精度**
+
+- **`float`**: 是32位（4字节）浮点数，精度约为6-7位十进制数字。
+- **`double`**: 是64位（8字节）浮点数，精度约为15-16位十进制数字。
+
+由于 `double` 具有更高的精度，它能够表示更小的差异和更大的范围，这使得它在大多数情况下更适合处理需要高精度的浮点运算。
+
+##### 2. **性能**
+
+在早期计算机和嵌入式系统中，由于内存和处理器的限制，使用 `float` 可能会带来一些性能优势，因为它占用的内存更少，运算速度可能稍快一些。然而，随着现代计算机性能的提升，`double` 的性能差异在大多数应用场景中已经可以忽略不计。
+
+##### 3. **默认选择**
+
+在Java中，如果你直接写一个带有小数点的常量，如 `5.5`，它默认是 `double` 类型。如果你需要指定一个 `float` 类型的常量，你需要在数字后加上 `f` 或 `F`，如 `5.5f`。
+
+```java
+double d = 5.5;  // 默认是 double 类型
+float f = 5.5f;  // 显式指定为 float 类型
+```
+
+##### 4. **常用场景**
+
+- **`float`**: 通常用于对内存和精度要求不高的场景，如图形处理、游戏开发中对浮点数的需求、嵌入式系统中的一些特殊场景。
+- **`double`**: 在科学计算、金融计算等对精度要求较高的领域，`double` 是首选。此外，Java中的许多数学函数（如 `Math.sqrt()`）都返回 `double` 类型的结果，这也使得 `double` 更加常用。
+
+##### 5. **示例代码**
+
+```java
+public class FloatVsDoubleExample {
+    public static void main(String[] args) {
+        float f = 1234567.1234567f;
+        double d = 1234567.1234567;
+
+        System.out.println("Float: " + f);   // 输出可能会有精度损失
+        System.out.println("Double: " + d);  // 输出更精确
+    }
+}
+```
+
+**输出**:
+
+```
+Float: 1234567.1
+Double: 1234567.1234567
+```
+
+可以看到，由于精度的原因，`float` 在表示较大数字或较多小数位时可能会出现精度损失，而 `double` 则更为精确。
+
+##### 总结
+
+- **大多数情况下使用 `double`**：它精度更高，能够处理更多的场景，是Java中处理浮点数的默认选择。
+- **在内存和性能至关重要的场景中使用 `float`**：例如在嵌入式系统或对性能要求极高的应用中，`float` 可能仍然有其用武之地。
+
+总体来说，除非有特殊需求，开发者通常会优先选择使用 `double`。
 
 ### 3. 字符型数据类型
 #### 3.1 `char`
@@ -582,22 +739,159 @@ public class BasicToString {
 
 ##### 3.2 字符串转换为基本数据类型
 
-**示例：**
+在 Java 中，将字符串转换为基本数据类型是一个常见的操作。Java 提供了多种方法来完成这项任务，主要是通过各个包装类（如 `Integer`、`Double`、`Boolean` 等）的静态方法来实现的。
+
+###### 1. 字符串转换为 `int`
+要将字符串转换为整数类型 `int`，可以使用 `Integer` 类的 `parseInt` 或 `valueOf` 方法。
+
+- **`parseInt(String s)`**：将字符串 `s` 转换为基本类型 `int`。如果字符串无法转换为整数（如包含非数字字符），会抛出 `NumberFormatException`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Integer` 对象。
+
+**示例**：
 ```java
-public class StringToBasic {
+String str = "123";
+int number = Integer.parseInt(str);  // 转换为基本类型 int
+Integer numberObj = Integer.valueOf(str);  // 转换为 Integer 对象
+```
+
+###### 2. 字符串转换为 `double`
+要将字符串转换为浮点数类型 `double`，可以使用 `Double` 类的 `parseDouble` 或 `valueOf` 方法。
+
+- **`parseDouble(String s)`**：将字符串 `s` 转换为基本类型 `double`。如果字符串无法转换为双精度浮点数，会抛出 `NumberFormatException`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Double` 对象。
+
+**示例**：
+```java
+String str = "123.45";
+double number = Double.parseDouble(str);  // 转换为基本类型 double
+Double numberObj = Double.valueOf(str);  // 转换为 Double 对象
+```
+
+###### 3. 字符串转换为 `boolean`
+要将字符串转换为布尔类型 `boolean`，可以使用 `Boolean` 类的 `parseBoolean` 或 `valueOf` 方法。
+
+- **`parseBoolean(String s)`**：将字符串 `s` 转换为基本类型 `boolean`。字符串内容为 `"true"`（不区分大小写）时，返回 `true`，其他情况返回 `false`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Boolean` 对象。
+
+**示例**：
+```java
+String str = "true";
+boolean boolValue = Boolean.parseBoolean(str);  // 转换为基本类型 boolean
+Boolean boolObj = Boolean.valueOf(str);  // 转换为 Boolean 对象
+```
+
+###### 4. 字符串转换为 `float`
+要将字符串转换为单精度浮点数类型 `float`，可以使用 `Float` 类的 `parseFloat` 或 `valueOf` 方法。
+
+- **`parseFloat(String s)`**：将字符串 `s` 转换为基本类型 `float`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Float` 对象。
+
+**示例**：
+```java
+String str = "123.45";
+float number = Float.parseFloat(str);  // 转换为基本类型 float
+Float numberObj = Float.valueOf(str);  // 转换为 Float 对象
+```
+
+###### 5. 字符串转换为 `long`
+要将字符串转换为长整数类型 `long`，可以使用 `Long` 类的 `parseLong` 或 `valueOf` 方法。
+
+- **`parseLong(String s)`**：将字符串 `s` 转换为基本类型 `long`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Long` 对象。
+
+**示例**：
+```java
+String str = "1234567890";
+long number = Long.parseLong(str);  // 转换为基本类型 long
+Long numberObj = Long.valueOf(str);  // 转换为 Long 对象
+```
+
+###### 6. 字符串转换为 `short`
+要将字符串转换为短整数类型 `short`，可以使用 `Short` 类的 `parseShort` 或 `valueOf` 方法。
+
+- **`parseShort(String s)`**：将字符串 `s` 转换为基本类型 `short`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Short` 对象。
+
+**示例**：
+```java
+String str = "12345";
+short number = Short.parseShort(str);  // 转换为基本类型 short
+Short numberObj = Short.valueOf(str);  // 转换为 Short 对象
+```
+
+###### 7. 字符串转换为 `byte`
+要将字符串转换为字节类型 `byte`，可以使用 `Byte` 类的 `parseByte` 或 `valueOf` 方法。
+
+- **`parseByte(String s)`**：将字符串 `s` 转换为基本类型 `byte`。
+
+- **`valueOf(String s)`**：将字符串 `s` 转换为 `Byte` 对象。
+
+**示例**：
+```java
+String str = "123";
+byte number = Byte.parseByte(str);  // 转换为基本类型 byte
+Byte numberObj = Byte.valueOf(str);  // 转换为 Byte 对象
+```
+
+###### 注意事项
+1. **异常处理**：在转换字符串时，如果字符串的格式不正确，可能会抛出 `NumberFormatException` 异常。因此，建议在实际使用时，添加异常处理代码。
+
+2. **数值范围**：转换时要注意基本数据类型的范围，如果字符串表示的数值超出了目标数据类型的范围，也会导致 `NumberFormatException` 异常。
+
+3. **空字符串或 `null`**：如果字符串为空（`""`）或 `null`，在进行转换时会抛出异常或者返回 `false` (对于 `boolean`) 或 `null`。
+
+###### 示例代码
+
+以下是一个完整的示例，展示了如何将字符串转换为不同的基本数据类型：
+
+```java
+public class StringToPrimitive {
     public static void main(String[] args) {
+        // 字符串转换为 int
         String intStr = "123";
-        String doubleStr = "456.78";
+        int intValue = Integer.parseInt(intStr);
+        System.out.println("Integer: " + intValue);
 
-        int intVal = Integer.parseInt(intStr);
-        double doubleVal = Double.parseDouble(doubleStr);
+        // 字符串转换为 double
+        String doubleStr = "123.45";
+        double doubleValue = Double.parseDouble(doubleStr);
+        System.out.println("Double: " + doubleValue);
 
-        System.out.println("Int from String: " + intVal);
-        System.out.println("Double from String: " + doubleVal);
+        // 字符串转换为 boolean
+        String booleanStr = "true";
+        boolean booleanValue = Boolean.parseBoolean(booleanStr);
+        System.out.println("Boolean: " + booleanValue);
+
+        // 字符串转换为 float
+        String floatStr = "123.45";
+        float floatValue = Float.parseFloat(floatStr);
+        System.out.println("Float: " + floatValue);
+
+        // 字符串转换为 long
+        String longStr = "1234567890";
+        long longValue = Long.parseLong(longStr);
+        System.out.println("Long: " + longValue);
+
+        // 字符串转换为 short
+        String shortStr = "12345";
+        short shortValue = Short.parseShort(shortStr);
+        System.out.println("Short: " + shortValue);
+
+        // 字符串转换为 byte
+        String byteStr = "123";
+        byte byteValue = Byte.parseByte(byteStr);
+        System.out.println("Byte: " + byteValue);
     }
 }
 ```
-在这个例子中，字符串 `intStr` 和 `doubleStr` 被转换为 `int` 和 `double` 类型。
+
+通过上述方法，你可以将字符串转换为 Java 中的基本数据类型，并确保在进行转换时正确处理可能出现的异常。
 
 #### 4. 字符与整数之间的转换
 
@@ -2169,6 +2463,514 @@ public class NestedForExample {
 
 # Java数据结构
 
+## 字符串
+
+### `String` 类
+
+> `String` 类是 Java 中用于处理字符串的基本类之一。它代表了字符序列，并且是不可变的（即字符串一旦创建，其值无法更改）。`String` 类提供了多种方法来操作和处理字符串，是 Java 开发中最常用的类之一。
+
+#### 1. 定义、声明与初始化
+
+##### 1.1 定义与声明
+在 Java 中，可以通过多种方式来声明一个字符串：
+
+```java
+String str1 = "Hello, World!";  // 字符串字面量
+String str2 = new String("Hello, World!");  // 使用构造函数
+char[] charArray = {'H', 'e', 'l', 'l', 'o'};
+String str3 = new String(charArray);  // 通过字符数组创建
+```
+
+##### 1.2 初始化
+Java 中的字符串可以通过字面量直接初始化，也可以通过构造函数、字符数组、字节数组等方式进行初始化：
+
+```java
+String str1 = "Hello, World!";
+String str2 = new String("Hello, World!");
+String str3 = new String(charArray);
+```
+
+#### 2. 常用的 `String` 类方法
+
+`String` 类中包含多种操作字符串的方法，以下是常用方法的详细介绍和使用示例：
+
+##### 2.1 `charAt(int index)`
+- **功能**：返回指定索引处的字符。索引从 0 开始。
+- **用法**：
+  ```java
+  String str = "Hello";
+  char c = str.charAt(1); // 'e'
+  ```
+
+##### 2.2 `concat(String str)`
+- **功能**：将指定字符串连接到当前字符串的末尾。
+- **用法**：
+  ```java
+  String str1 = "Hello";
+  String str2 = str1.concat(" World"); // "Hello World"
+  ```
+
+##### 2.3 `contains(CharSequence s)`
+- **功能**：判断当前字符串是否包含指定的字符序列。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  boolean contains = str.contains("World"); // true
+  ```
+
+##### 2.4 `equals(Object obj)`
+- **功能**：比较两个字符串的内容是否相等。区分大小写。
+- **用法**：
+  ```java
+  String str1 = "Hello";
+  String str2 = "hello";
+  boolean isEqual = str1.equals(str2); // false
+  ```
+
+##### 2.5 `equalsIgnoreCase(String anotherString)`
+- **功能**：比较两个字符串的内容是否相等。忽略大小写。
+- **用法**：
+  ```java
+  String str1 = "Hello";
+  String str2 = "hello";
+  boolean isEqual = str1.equalsIgnoreCase(str2); // true
+  ```
+
+##### 2.6 `indexOf(String str)`
+- **功能**：返回指定子字符串在当前字符串中首次出现的索引，如果未找到，则返回 -1。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  int index = str.indexOf("World"); // 6
+  ```
+
+##### 2.7 `isEmpty()`
+- **功能**：判断字符串是否为空（长度为 0）。
+- **用法**：
+  ```java
+  String str = "";
+  boolean isEmpty = str.isEmpty(); // true
+  ```
+
+##### 2.8 `join(CharSequence delimiter, CharSequence... elements)`
+- **功能**：将多个字符串按指定分隔符连接成一个字符串。
+- **用法**：
+  ```java
+  String joined = String.join(", ", "apple", "banana", "cherry");
+  // "apple, banana, cherry"
+  ```
+
+##### 2.9 `length()`
+- **功能**：返回字符串的长度（字符数）。
+- **用法**：
+  ```java
+  String str = "Hello";
+  int length = str.length(); // 5
+  ```
+
+##### 2.10 `matches(String regex)`
+- **功能**：判断字符串是否匹配指定的正则表达式。
+- **用法**：
+  ```java
+  String str = "12345";
+  boolean matches = str.matches("\\d+"); // true, 表示只包含数字
+  ```
+
+##### 2.11 `replace(CharSequence target, CharSequence replacement)`
+- **功能**：将字符串中的所有指定子字符串替换为新的子字符串。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String newStr = str.replace("World", "Java"); // "Hello Java"
+  ```
+
+##### 2.12 `split(String regex)`
+- **功能**：根据正则表达式分割字符串，返回字符串数组。
+- **用法**：
+  ```java
+  String str = "apple,banana,cherry";
+  String[] fruits = str.split(","); // ["apple", "banana", "cherry"]
+  ```
+
+##### 2.13 `strip()`
+- **功能**：去除字符串前后的空白字符，`strip` 方法能够正确处理 Unicode 空白字符。
+- **用法**：
+  
+  ```java
+  String str = "  Hello World  ";
+  String strippedStr = str.strip(); // "Hello World"
+  ```
+
+##### 2.14 `trim()`
+- **功能**：去除字符串前后的空白字符（仅处理 ASCII 空白字符）。
+- **用法**：
+  ```java
+  String str = "  Hello World  ";
+  String trimmedStr = str.trim(); // "Hello World"
+  ```
+
+##### 2.15 `substring(int beginIndex)`
+- **功能**：返回从指定索引开始直到字符串结尾的子字符串。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String subStr = str.substring(6); // "World"
+  ```
+
+##### 2.16 `substring(int beginIndex, int endIndex)`
+- **功能**：返回从 `beginIndex` 开始到 `endIndex` 结束的子字符串。`endIndex` 不包括在内。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String subStr = str.substring(0, 5); // "Hello"
+  ```
+
+##### 2.17 `toUpperCase()`
+- **功能**：将字符串转换为全大写字母。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String upperStr = str.toUpperCase(); // "HELLO WORLD"
+  ```
+
+##### 2.18 `toLowerCase()`
+- **功能**：将字符串转换为全小写字母。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String lowerStr = str.toLowerCase(); // "hello world"
+  ```
+
+##### 2.19 `valueOf()`
+- **功能**：将各种数据类型转换为字符串。
+- **用法**：
+  ```java
+  int num = 100;
+  String str = String.valueOf(num); // "100"
+  ```
+
+#### 3. 其他常用字符串方法
+
+##### 3.1 `startsWith(String prefix)`
+- **功能**：判断字符串是否以指定前缀开头。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  boolean startsWith = str.startsWith("Hello"); // true
+  ```
+
+##### 3.2 `endsWith(String suffix)`
+- **功能**：判断字符串是否以指定后缀结尾。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  boolean endsWith = str.endsWith("World"); // true
+  ```
+
+##### 3.3 `replaceAll(String regex, String replacement)`
+- **功能**：使用正则表达式匹配并替换字符串中的所有子字符串。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String newStr = str.replaceAll("\\s+", "_"); // "Hello_World"
+  ```
+
+##### 3.4 `replaceFirst(String regex, String replacement)`
+- **功能**：使用正则表达式匹配并替换字符串中的第一个子字符串。
+- **用法**：
+  ```java
+  String str = "Hello World";
+  String newStr = str.replaceFirst("\\s", "_"); // "Hello_World"
+  ```
+
+##### 3.5 `toCharArray()`
+- **功能**：将字符串转换为字符数组。
+- **用法**：
+  ```java
+  String str = "Hello";
+  char[] charArray = str.toCharArray(); // ['H', 'e', 'l', 'l', 'o']
+  ```
+
+##### 3.6 `format(String format, Object... args)`
+- **功能**：返回一个格式化后的字符串。
+- **用法**：
+  ```java
+  String formattedStr = String.format("My name is %s and I am %d years old.", "John", 30);
+  // "My name is John and I am 30 years old."
+  ```
+
+#### 4. 注意事项
+
+1. **字符串不可变性**：Java 中的字符串是不可变的，每次对字符串进行操作都会返回一个新的字符串对象。这意味着频
+
+繁修改字符串可能会造成大量的内存消耗，建议使用 `StringBuilder` 或 `StringBuffer` 类来进行频繁的字符串修改操作。
+
+2. **`==` 和 `equals` 的区别**：`==` 比较的是对象的引用地址，而 `equals` 方法比较的是字符串的内容。在比较字符串时，应该优先使用 `equals` 方法。
+
+3. **正则表达式**：使用正则表达式进行字符串匹配和替换时要注意其复杂性和性能，特别是在处理大文本时。
+
+4. **编码问题**：处理字符串时，特别是读取和写入文件或网络数据时，要注意字符编码问题。确保编码一致以避免乱码问题。
+
+#### 5. 总结
+
+`String` 类提供了丰富的功能，可以让我们方便地进行字符串操作。在使用时，注意字符串的不可变性和性能问题。在需要频繁修改字符串时，使用 `StringBuilder` 或 `StringBuffer` 可以提高性能。掌握 `String` 类的各种方法，可以帮助我们更加高效地处理字符串相关的任务。
+
+### `StringBuffer` 类
+
+`StringBuffer` 是 Java 中用于创建和操作可变字符串的类。它与 `StringBuilder` 类相似，但最大的区别在于它是线程安全的，适用于多线程环境。以下是对 `StringBuffer` 类的详细介绍，包括定义、声明、初始化、常用方法、注意事项和总结。
+
+#### 1. 定义与声明
+
+`StringBuffer` 类位于 `java.lang` 包中，用于表示可变的字符序列。与不可变的 `String` 类不同，`StringBuffer` 可以直接修改字符串内容，而不会创建新的对象。
+
+```java
+StringBuffer sb = new StringBuffer();
+```
+
+也可以使用初始字符串来创建一个 `StringBuffer` 对象：
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+```
+
+#### 2. 常用方法
+
+`StringBuffer` 提供了许多方法来操作字符串内容。以下是一些常用方法的介绍。
+
+##### 2.1 `append()`
+将指定的字符串或其他数据类型添加到 `StringBuffer` 对象的末尾。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+sb.append(" World");
+System.out.println(sb.toString());  // 输出: "Hello World"
+```
+
+##### 2.2 `insert()`
+在指定位置插入字符串或其他数据类型。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+sb.insert(5, " Java");
+System.out.println(sb.toString());  // 输出: "Hello Java"
+```
+
+##### 2.3 `delete()`
+删除指定范围内的字符。
+
+```java
+StringBuffer sb = new StringBuffer("Hello World");
+sb.delete(5, 11);
+System.out.println(sb.toString());  // 输出: "Hello"
+```
+
+##### 2.4 `replace()`
+替换指定范围内的字符为新的字符串。
+
+```java
+StringBuffer sb = new StringBuffer("Hello World");
+sb.replace(6, 11, "Java");
+System.out.println(sb.toString());  // 输出: "Hello Java"
+```
+
+##### 2.5 `reverse()`
+将字符串内容反转。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+sb.reverse();
+System.out.println(sb.toString());  // 输出: "olleH"
+```
+
+##### 2.6 `toString()`
+将 `StringBuffer` 对象转换为 `String` 对象。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+String result = sb.toString();
+System.out.println(result);  // 输出: "Hello"
+```
+
+##### 2.7 `length()`
+获取 `StringBuffer` 对象的长度（字符数）。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+int length = sb.length();
+System.out.println(length);  // 输出: 5
+```
+
+##### 2.8 `capacity()`
+获取 `StringBuffer` 的当前容量。容量指的是 `StringBuffer` 在不需要分配新存储空间的情况下，能够容纳的字符数。
+
+```java
+StringBuffer sb = new StringBuffer();
+int capacity = sb.capacity();
+System.out.println(capacity);  // 默认输出: 16
+```
+
+##### 2.9 `setLength()`
+设置 `StringBuffer` 对象的长度。如果设置的长度比当前长度短，多余的字符会被删除；如果设置的长度比当前长度长，新增加的字符会填充为 `\0`。
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+sb.setLength(3);
+System.out.println(sb.toString());  // 输出: "Hel"
+```
+
+#### 3. 注意事项
+
+- **线程安全**：`StringBuffer` 是线程安全的。它的所有方法都被同步（synchronized），因此可以安全地在多线程环境中使用。然而，这种线程安全性是有代价的，`StringBuffer` 的操作性能通常比 `StringBuilder` 慢一些。
+
+- **效率低于 `StringBuilder`**：在单线程环境中，如果不需要线程安全的特性，`StringBuilder` 是更好的选择，因为它的操作性能更高。
+
+- **初始容量**：和 `StringBuilder` 一样，`StringBuffer` 会自动扩展其容量，但在知道字符串长度的情况下，预先设置合适的容量可以提高性能。
+
+#### 4. 总结
+
+`StringBuffer` 是一个重要的类，适用于需要频繁修改字符串且需要线程安全的场景。它提供了丰富的方法来对字符串进行追加、插入、删除、替换等操作。在单线程环境中，`StringBuilder` 通常是更好的选择，但在多线程环境中，`StringBuffer` 则提供了安全的操作方式。
+
+以下是 `StringBuffer` 的常用方法总结：
+
+- **`append()`**：追加内容。
+- **`insert()`**：插入内容。
+- **`delete()`**：删除指定范围的字符。
+- **`replace()`**：替换指定范围的字符。
+- **`reverse()`**：反转字符串。
+- **`toString()`**：转换为 `String`。
+- **`length()`**：获取长度。
+- **`capacity()`**：获取容量。
+- **`setLength()`**：设置长度。
+
+`StringBuffer` 是在多线程环境中进行字符串操作的安全选择。掌握 `StringBuffer` 的使用，可以帮助你在开发高并发应用时更有效地处理字符串。
+
+### `StringBuilder`类
+
+`StringBuilder` 类是 Java 中用于创建和操作可变字符串的类。与 `String` 类不同，`StringBuilder` 允许对字符串进行修改而不创建新的对象，因此在频繁操作字符串时具有更高的性能。以下是对 `StringBuilder` 类的详细介绍，包括定义、使用方法、常用操作、注意事项和总结。
+
+#### 1. 定义与声明
+
+`StringBuilder` 类位于 `java.lang` 包中，是一个用于创建和操作可变字符串的类。`StringBuilder` 提供了一系列的方法，可以方便地对字符串进行添加、删除、替换、插入等操作。
+
+```java
+StringBuilder sb = new StringBuilder();
+```
+
+也可以使用初始字符串来创建一个 `StringBuilder` 对象：
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+```
+
+#### 2. 常用方法
+
+##### 2.1 `append()`
+将指定的字符串或其他数据类型添加到 `StringBuilder` 对象的末尾。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+System.out.println(sb.toString());  // 输出: "Hello World"
+```
+
+##### 2.2 `insert()`
+在指定位置插入字符串或其他数据类型。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.insert(5, " Java");
+System.out.println(sb.toString());  // 输出: "Hello Java"
+```
+
+##### 2.3 `delete()`
+删除指定范围内的字符。
+
+```java
+StringBuilder sb = new StringBuilder("Hello World");
+sb.delete(5, 11);
+System.out.println(sb.toString());  // 输出: "Hello"
+```
+
+##### 2.4 `replace()`
+替换指定范围内的字符为新的字符串。
+
+```java
+StringBuilder sb = new StringBuilder("Hello World");
+sb.replace(6, 11, "Java");
+System.out.println(sb.toString());  // 输出: "Hello Java"
+```
+
+##### 2.5 `reverse()`
+将字符串内容反转。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.reverse();
+System.out.println(sb.toString());  // 输出: "olleH"
+```
+
+##### 2.6 `toString()`
+将 `StringBuilder` 对象转换为 `String` 对象。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+String result = sb.toString();
+System.out.println(result);  // 输出: "Hello"
+```
+
+##### 2.7 `length()`
+获取 `StringBuilder` 对象的长度（字符数）。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+int length = sb.length();
+System.out.println(length);  // 输出: 5
+```
+
+##### 2.8 `capacity()`
+获取 `StringBuilder` 的当前容量。容量指的是 `StringBuilder` 在不需要分配新存储空间的情况下，能够容纳的字符数。
+
+```java
+StringBuilder sb = new StringBuilder();
+int capacity = sb.capacity();
+System.out.println(capacity);  // 默认输出: 16
+```
+
+##### 2.9 `setLength()`
+设置 `StringBuilder` 对象的长度。如果设置的长度比当前长度短，多余的字符会被删除；如果设置的长度比当前长度长，新增加的字符会填充为 `\0`。
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.setLength(3);
+System.out.println(sb.toString());  // 输出: "Hel"
+```
+
+#### 3. 注意事项
+
+- **线程不安全**：`StringBuilder` 是非线程安全的。如果在多线程环境下使用，应考虑使用线程安全的 `StringBuffer`。
+  
+- **初始容量**：`StringBuilder` 会自动扩展其容量，但在知道字符串长度的情况下，预先设置合适的容量可以提高性能。通过构造函数 `new StringBuilder(int capacity)` 可以指定初始容量。
+
+- **效率高**：与 `String` 相比，`StringBuilder` 更适合用于需要大量拼接、修改字符串的场景，因为它不会像 `String` 一样创建大量临时对象。
+
+#### 4. 总结
+
+`StringBuilder` 是一个强大的工具类，适用于需要频繁操作和修改字符串的场景。它提供了丰富的方法，可以对字符串进行追加、插入、删除、替换等操作，并且比 `String` 更高效。了解和掌握 `StringBuilder` 的使用，可以显著提升字符串操作的性能，尤其是在循环或大量拼接字符串的场景下。
+
+以下是 `StringBuilder` 的常用方法总结：
+
+- **`append()`**：追加内容。
+- **`insert()`**：插入内容。
+- **`delete()`**：删除指定范围的字符。
+- **`replace()`**：替换指定范围的字符。
+- **`reverse()`**：反转字符串。
+- **`toString()`**：转换为 `String`。
+- **`length()`**：获取长度。
+- **`capacity()`**：获取容量。
+- **`setLength()`**：设置长度。
+
+`StringBuilder` 是 Java 中处理可变字符串的主要类，适合在不需要线程安全的场景中使用。
+
 ## 数组
 
 ### 普通数组
@@ -3490,6 +4292,12 @@ public class HashMapExample {
 #### 6. 总结
 
 `HashMap` 是一个强大且灵活的映射实现，适用于需要快速查找、插入和删除键值对的场景。它支持 `null` 键和值，并且具有良好的性能，但在使用时需要注意线程安全和可能的哈希冲突。通过理解和掌握 `HashMap` 的使用，可以帮助你在处理键值对数据时选择合适的数据结构。
+
+# Java常用方法
+
+## Arrays
+
+
 
 # 面向对象编程
 
